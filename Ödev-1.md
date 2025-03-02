@@ -17,25 +17,25 @@ TXT Dosyadan Veri Okuyan Ve Yazan Program :
 
 Şematik Kısım :
 
-![image](https://github.com/user-attachments/assets/1dbd6299-151e-42b4-9642-9249eb11710f)
+
 
 Kod Kısmı :
 
-![image](https://github.com/user-attachments/assets/f4055423-68f2-4052-8817-1740115b0428)
+![image](https://github.com/user-attachments/assets/cf8069b5-b4ef-466f-a699-9a1c1c48a400)
 
 Bu kod, belirtilen veri.txt dosyasından veri okur ve kullanıcıdan alınan yeni veriyi dosyaya ekler.
 
 1.Çıktı :
 
-![image](https://github.com/user-attachments/assets/6a244d47-5fb5-4aaa-8d07-b8118f3f035e)
+![image](https://github.com/user-attachments/assets/116e0c10-2e8e-4d7b-9a65-09b0e9a5d5bb)
 
 2.Çıktı :
 
-![image](https://github.com/user-attachments/assets/9d6e386b-4021-40f1-acfe-ea20d4f2ace4)
+![image](https://github.com/user-attachments/assets/31bc9d25-9b35-44e6-8f06-396c25158476)
 
 veri.txt Dosyasının İçeriği :
 
-![image](https://github.com/user-attachments/assets/6e8ba86d-b711-4f38-b74f-4cc82f9d1e63)
+![image](https://github.com/user-attachments/assets/49fdc560-5c24-4eb9-92bf-27fe2830744f)
 
 2-) Geleneksel Dosyalama Sistemleri İle Veri Tabanı Yönetim Sistemlerinin Benzerlikleri Ve Farklılıkları Nelerdir ?
 
@@ -143,7 +143,7 @@ Bu kullanıcı türleri, veritabanı yönetim sistemine ve organizasyonun ihtiya
 
 8-)Örnek Bir Veri Tabanı İçin Kullanıcılar Belirleyerek Yetkilendirmelerini Şematik Olarak Gösteriniz ?
 
-![image](https://github.com/user-attachments/assets/c215c6ee-60db-40ea-9827-ac6940f29028)
+![image](https://github.com/user-attachments/assets/c1edee9b-82d2-4db5-8560-344a24a31bdd)
 
 Veritabanı kullanıcıları ve yetkilendirmelerini şematik olarak göstermek için aşağıdaki gibi bir yapı oluşturabiliriz. Bu örnek, kullanıcıların rollerini ve bu rollerin hangi yetkilere sahip olduğunu gösterir.
 Kullanıcılar ve Yetkilendirme Şeması
