@@ -1,138 +1,106 @@
-create database kutuphane; --bir kez database oluşturulurken çalıştırılır.
+create database Library; -- bir kez database oluşturulurken çalıştırılır.
 
-use Kutuphane -- bu kütüphaneyi kullanarak tablo ekleyebiliriz
 
--- 1) ADRESLER Tablosu
--- Kütüphane ve üyelerin adres bilgilerini tutar
+use Kutuphane -- bu kütüphaneyi kullanarak tablo ekleyebiliriz.
 
-create table adresler(
-adresNo int not null identity(1,1) primary key, -- Otomatik artan benzersiz adres numarası
-sehir nvarchar(30),                             -- Adresin bulunduğu şehir
-cadde nvarchar(30),                             -- Cadde adı
-mahalle nvarchar(30),                           -- Mahalle adı
-ilce nvarchar(30),                              -- İlçe adı
-adresSatiri nvarchar(255),                      -- Tam adres satırı
-posta_Kodu nvarchar(10),                        -- Posta kodu
-ulke nvarchar(100)                              -- Ülke adı
+
+1) 
+create table Adresler( -- Adres bilgilerini tutan tablo
+adresNo int not null identity(1,1) Primary Key, -- Benzersiz adres numarası
+sehir nvarchar(100), -- Şehir bilgisi
+cadde nvarchar(100), -- Cadde bilgisi
+mahalle nvarchar(100), -- Mahalle bilgisi
+binaNo int, -- Bina numarası
+postaKodu int, -- Posta kodu
+ulke nvarchar(100) -- Ülke bilgisi
 );
 
 
--- 2) UYELER Tablosu
--- Kütüphane üyelerinin bilgilerini tutar
 
-create table Uyeler(
-Uye_No int not null identity(1,1) primary key,  -- Otomatik artan benzersiz üye numarası
-Uye_Ad nvarchar(50) not null,                   -- Üyenin adı (boş olamaz)
-Uye_Soyad nvarchar(50) not null,                -- Üyenin soyadı (boş olamaz)
-Telefon nvarchar(20) not null,                  -- Üyenin telefon numarası (boş olamaz)
-Cinsiyet nvarchar(10),                          -- Üyenin cinsiyeti
-Eposta nvarchar(100),                           -- Üyenin e-posta adresi
-DogumTarihi date                                -- Üyenin doğum tarihi
-);
-
--- 3) KUTUPHANE Tablosu
--- Kütüphane bilgilerini tutar
-
-create table Kutuphane(
-Kutuphane_No int identity(1,1) not null primary key, -- Otomatik artan benzersiz kütüphane numarası
-Kutuphane_Adi nvarchar(100) not null,                -- Kütüphane adı (boş olamaz)
-KutuphaneIletisim nvarchar(100),                     -- Kütüphane iletişim bilgileri
-Aciklama nvarchar(255),                              -- Kütüphane hakkında açıklama
-adresNo int foreign key (adresNo) references adresler(adresNo) -- Kütüphanenin adres bilgisi (adresler tablosuyla ilişki)
-);
-
--- 4) KATEGORILER Tablosu
--- Kitap kategorilerini tutar
-
-create table Kategoriler(
-Kategori_No int not null identity(1,1) primary key, -- Otomatik artan benzersiz kategori numarası
-Kategori_Adi nvarchar(50) not null                  -- Kategori adı (boş olamaz)
-);
-
--- 5) YAZARLAR Tablosu
--- Kitap yazarlarının bilgilerini tutar
-
-create table Yazarlar(
-Yazar_No int not null identity(1,1) primary key, -- Otomatik artan benzersiz yazar numarası
-Yazar_Ad nvarchar(50) not null,                  -- Yazarın adı (boş olamaz)
-Yazar_Soyad nvarchar(50),                        -- Yazarın soyadı
-YazarBilgi nvarchar(255)                         -- Yazar hakkında bilgi
-);
-
--- 6) KITAPLAR Tablosu
--- Kitap bilgilerini tutar
-
-create table kitaplar(
-ISBN int not null primary key,                   -- Kitabın ISBN numarası (benzersiz)
-Kitap_Adi nvarchar(100) not null,                -- Kitabın adı (boş olamaz)
-Yayin_Tarih date,                                -- Kitabın yayın tarihi
-Sayfa_Sayisi int,                                -- Kitabın sayfa sayısı
-Kutuphane_No int foreign key (Kutuphane_No) references Kutuphane(Kutuphane_No) -- Kitabın bulunduğu kütüphane (Kutuphane tablosuyla ilişki)
-);
-
--- 7) EMANET Tablosu
--- Kitap ödünç alma işlemlerini tutar
-
-create table emanet(
-emanet_no int identity(1,1) not null primary key, -- Otomatik artan benzersiz emanet numarası
-emanet_tarih date not null,                       -- Emanet alma tarihi (boş olamaz)
-teslim_tarih date,                                -- Teslim tarihi (null ise henüz teslim edilmemiş)
-uye_No int foreign key (uye_No) references Uyeler(Uye_No) -- Emanet alan üye (Uyeler tablosuyla ilişki)
+2)
+create table uyeler( -- Kütüphane üyelerinin bilgilerini tutan tablo
+uyeNo int not null identity(1,1) Primary Key, -- Benzersiz üye numarası
+uyeAdi nvarchar(50) not null, -- Üye adı (boş olamaz)
+uyeSoyadi nvarchar(50) not null, -- Üye soyadı (boş olamaz)
+eposta nvarchar(100), -- E-posta adresi
+telefon nvarchar(100), -- Telefon numarası
+cinsiyet char(2), -- Cinsiyet bilgisi
+adresNO int Foreign Key(adresNo) REFERENCES -- Üyenin adres bilgisi
+adresler(adresNO)
 );
 
 
--- 8) UYELERINADRESLERI Tablosu (İlişki Tablosu)
--- Üyeler ve adresler arasındaki çoka-çok ilişkiyi tutar
--- Bir üyenin birden fazla adresi olabilir, bir adres birden fazla üyeye ait olabilir
 
-create table UyelerinAdresleri(
-Uye_No int foreign key(Uye_No) references Uyeler(Uye_No),         -- Üye numarası (Uyeler tablosuyla ilişki)
-adresNo int foreign key(adresNo) references adresler(adresNo),    -- Adres numarası (adresler tablosuyla ilişki)
-primary key (Uye_No, adresNo)                                     -- Bileşik anahtar
+3) 
+create table kutuphane( -- Kütüphane bilgilerini tutan tablo
+kutuphaneNO int not null identity(1,1) primary key, -- Benzersiz kütüphane numarası
+kutuphaneIsmi nvarchar(100) not null, -- Kütüphane ismi (boş olamaz)
+aciklama nvarchar(150), -- Kütüphane açıklaması
+adresNo int foreign key (adresNo) references adresler(adresNo) -- Kütüphanenin adres bilgisi
 );
 
 
--- 9) KITAPKATEGORI Tablosu (İlişki Tablosu)
--- Kitaplar ve kategoriler arasındaki çoka-çok ilişkiyi tutar
--- Bir kitap birden fazla kategoriye ait olabilir, bir kategori birden fazla kitabı içerebilir
 
-create table KitapKategori(
-ISBN int foreign key(ISBN) references Kitaplar(ISBN),                      -- Kitap ISBN (kitaplar tablosuyla ilişki)
-Kategori_No int foreign key(Kategori_No) references Kategoriler(Kategori_No), -- Kategori numarası (Kategoriler tablosuyla ilişki)
-primary key (ISBN, Kategori_No)                                            -- Bileşik anahtar
+4)
+create table kitaplar( -- Kitap bilgilerini tutan tablo
+ISBN int not null primary key, -- Kitabın ISBN numarası (benzersiz)
+sayfaSayisi int, -- Kitabın sayfa sayısı
+kitapAdi nvarchar(100) not null, -- Kitap adı (boş olamaz)
+yayinTarihi nvarchar(100) -- Kitabın yayın tarihi
 );
 
 
--- 10) KITAPYAZAR Tablosu (İlişki Tablosu)
--- Kitaplar ve yazarlar arasındaki çoka-çok ilişkiyi tutar
--- Bir kitabın birden fazla yazarı olabilir, bir yazar birden fazla kitap yazabilir
 
-create table KitapYazar(
-ISBN int foreign key(ISBN) references Kitaplar(ISBN),                -- Kitap ISBN (kitaplar tablosuyla ilişki)
-Yazar_No int foreign key(Yazar_No) references Yazarlar(Yazar_No),    -- Yazar numarası (Yazarlar tablosuyla ilişki)
-primary key (ISBN, Yazar_No)                                         -- Bileşik anahtar
+5)
+create table emanet( -- Kitap ödünç alma işlemlerini tutan tablo
+emanetNO int not null identity(1,1) Primary Key, -- Benzersiz emanet numarası
+emanetTarihi nvarchar(100), -- Emanet alma tarihi
+teslimTarihi nvarchar(100), -- Teslim tarihi
+uyeNo int Foreign Key (uyeNo) references uyeler(uyeNo), -- Emanet alan üye
+kutuphaneNo int Foreign Key (kutuphaneNo) references kutuphane (kutuphaneNo), -- Emanet alınan kütüphane
+ISBN int Foreign Key (ISBN) references kitaplar(ISBN) -- Emanet alınan kitap
 );
 
 
--- 11) EMANETKITAP Tablosu (İlişki Tablosu)
--- Emanet ve kitaplar arasındaki çoka-çok ilişkiyi tutar
--- Bir emanet işleminde birden fazla kitap alınabilir, bir kitap farklı zamanlarda emanet alınabilir
 
-create table EmanetKitap(
-emanet_no int foreign key(emanet_no) references emanet(emanet_no),  -- Emanet numarası (emanet tablosuyla ilişki)
-ISBN int foreign key(ISBN) references Kitaplar(ISBN),               -- Kitap ISBN (kitaplar tablosuyla ilişki)
-primary key (emanet_no, ISBN)                                       -- Bileşik anahtar
+6)
+create table kitap_bulunur( -- Kütüphanelerdeki kitapların miktarını tutan tablo
+kutuphaneNo int Foreign Key (kutuphaneNo) references kutuphane (kutuphaneNo), -- Kütüphane numarası
+ISBN int Foreign Key (ISBN) references kitaplar(ISBN), -- Kitap ISBN
+Miktar int NOT NULL -- Kitabın kütüphanedeki miktarı
 );
 
 
--- 12) KUTUPHANEKITAP Tablosu (İlişki Tablosu)
--- Kütüphane ve kitaplar arasındaki çoka-çok ilişkiyi tutar
--- Bir kütüphanede birden fazla kitap bulunabilir, bir kitap farklı kütüphanelerde bulunabilir
--- Ayrıca her kitabın her kütüphanedeki miktarını da tutar
 
-create table KutuphaneKitap(
-Kutuphane_No int foreign key(Kutuphane_No) references Kutuphane(Kutuphane_No), -- Kütüphane numarası (Kutuphane tablosuyla ilişki)
-ISBN int foreign key(ISBN) references Kitaplar(ISBN),                          -- Kitap ISBN (kitaplar tablosuyla ilişki)
-Miktar int default 1,                                                          -- Kitabın kütüphanedeki miktarı (varsayılan 1)
-primary key (Kutuphane_No, ISBN)                                               -- Bileşik anahtar
+7)
+create table Yazar( -- Kitap-Yazar ilişkisini tutan tablo
+yazar_Id int NOT NULL primary key, -- Benzersiz ilişki numarası
+Yazar_No int foreign key (Yazar_No) references Yazarlar(Yazar_No), -- Yazar numarası
+ISBN int Foreign Key (ISBN) references kitaplar(ISBN) -- Kitap ISBN
+);
+
+
+
+8)
+create table Yazarlar( -- Yazar bilgilerini tutan tablo
+Yazar_No int NOT NULL primary key identity(1,1), -- Benzersiz yazar numarası
+yazar_adi nvarchar(100), -- Yazarın adı
+yazar_soyadi nvarchar(100) -- Yazarın soyadı
+);
+
+
+
+9)
+create table Kategoriler( -- Kitap kategorilerini tutan tablo
+kategori_no int NOT NULL primary key identity(1,1), -- Benzersiz kategori numarası
+kategori_adi nvarchar(100) NOT NULL -- Kategori adı (boş olamaz)
+);
+
+
+
+10)
+create table katogori_bulunur( -- Kitap-Kategori ilişkisini tutan tablo
+Id int NOT NULL primary key identity(1,1), -- Benzersiz ilişki numarası
+ISBN int Foreign Key (ISBN) references kitaplar(ISBN), -- Kitap ISBN
+kategori_no int Foreign Key (kategori_no) references Kategoriler(kategori_no) -- Kategori numarası
 ); 
